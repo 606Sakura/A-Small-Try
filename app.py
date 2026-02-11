@@ -262,7 +262,7 @@ with col_left:
     gen_method = st.selectbox("生成器", options=["None", "OpenAI API", "Local HF (transformers)"])
     if gen_method == "OpenAI API":
         st.caption("需要设置环境变量 OPENAI_API_KEY；调用前会显示 token 与费用估算。")
-    if gen_method == "Local HF (transformers)"):
+    if gen_method == "Local HF (transformers)":
         st.caption("本地生成需要 transformers + torch；CPU 上可能很慢。")
     openai_model = st.text_input("OpenAI 模型名（若使用 OpenAI）", value="gpt-3.5-turbo")
     gen_max_tokens = st.slider("生成最大 tokens（completion 最大长度）", 64, 1024, 256)
@@ -290,13 +290,14 @@ with col_main:
             st.write("### 合并后的上下文（已截断）")
             st.write(assembled[:4000] + ("..." if len(assembled) > 4000 else ""))
 
+            prompt_template = (
+                "你是一个知识库问答助手。请基于下面从知识库检索到的上下文，"
+                "以及用户的问题，给出简洁、准确、可引用来源的回答。\n\n"
+                "上下文:\n{context}\n\n用户问题:\n{question}\n\n回答:"
+            )
+            prompt = prompt_template.format(context=assembled, question=query)
+
             if gen_method == "OpenAI API":
-                prompt_template = (
-                    "你是一个知识库问答助手。请基于下面从知识库检索到的上下文，"
-                    "以及用户的问题，给出简洁、准确、可引用来源的回答。\n\n"
-                    "上下文:\n{context}\n\n用户问题:\n{question}\n\n回答:"
-                )
-                prompt = prompt_template.format(context=assembled, question=query)
 
                 est = estimate_tokens_and_cost(prompt, expected_completion_tokens=gen_max_tokens, model_name=openai_model)
                 st.write("**估算（仅供参考）**")
