@@ -1,0 +1,10 @@
+streamlit>=1.20
+sentence-transformers>=2.2.2
+scikit-learn>=1.2
+numpy
+PyMuPDF
+openai>=0.27.0
+tiktoken>=0.4.0
+# optional (if you want local HF generation):
+transformers>=4.30.0
+torch
