@@ -16,6 +16,12 @@
   - `docker build -t rag-chatbot-mvp:latest .`
   - `docker run -p 8501:8501 rag-chatbot-mvp:latest`
 
+## 线上运行（PaaS）
+- 本项目容器已支持读取平台注入的 `PORT` 环境变量（例如 Railway/Render/Fly.io）。
+- 若平台自动分配端口，无需手动改 `Dockerfile`，直接部署即可。
+- 若本地模拟动态端口，可执行：
+  - `docker run -e PORT=7860 -p 7860:7860 rag-chatbot-mvp:latest`
+
 ## 费用估算
 - 本项目会在调用 OpenAI 前估算 token 与费用（基于 `tiktoken` 或经验估算与 `MODEL_PRICE_PER_1K`）。
 - 请定期核对 OpenAI 官方定价并更新 `MODEL_PRICE_PER_1K`。
